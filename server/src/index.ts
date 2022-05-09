@@ -7,6 +7,8 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import cors from "cors";
+import { Contact } from "./entities/Contact";
+import { ContactResolver } from "./resolvers/contact";
 
 const main = async () => {
     const connection = await createConnection({
@@ -17,7 +19,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        // entities: [Post, User, Updoot],
+        entities: [Contact],
     });
 
     // await connection.runMigrations();
@@ -33,7 +35,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [HelloResolver],
+            resolvers: [HelloResolver, ContactResolver],
             validate: false,
         }),
     });
