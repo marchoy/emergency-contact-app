@@ -1,0 +1,9 @@
+query ContactNumbers($contactId: Float!) {
+  contact(id: $contactId) {
+    contactNumbers {
+      id
+      phoneNumber
+      phoneNumberType
+    }
+  }
+}

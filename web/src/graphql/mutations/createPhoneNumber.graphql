@@ -1,0 +1,7 @@
+mutation CreatePhoneNumber($input: PhoneNumberInput!) {
+  createPhoneNumber(input: $input) {
+    id
+    phoneNumber
+    phoneNumberType
+  }
+}
