@@ -1,14 +1,22 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
+import { useCreateContactMutation } from "../generated/graphql";
+import { useRouter } from "next/router";
 
 interface createProps {}
 
 const Create: React.FC<createProps> = ({}) => {
+    const router = useRouter();
+    const [, createContact] = useCreateContactMutation();
+
     return (
-        <Wrapper variant="small">
+        <Wrapper>
+            <Box marginBottom={4}>
+                <Heading fontSize={"xl"}>Create Contact</Heading>
+            </Box>
             <Formik
                 initialValues={{
                     name: "",
@@ -16,7 +24,12 @@ const Create: React.FC<createProps> = ({}) => {
                     createdBy: "",
                     updatedBy: "",
                 }}
-                onSubmit={() => console.log("SUBMIT")}
+                onSubmit={async (values) => {
+                    const { error } = await createContact({ input: values });
+                    if (!error) {
+                        router.push("/");
+                    }
+                }}
             >
                 {({ isSubmitting }) => (
                     <Form>
@@ -39,18 +52,6 @@ const Create: React.FC<createProps> = ({}) => {
                                 placeholder="created by"
                             />
                         </Box>
-                        <Box marginTop={4}>
-                            <InputField
-                                name="updatedBy"
-                                label="Updated By"
-                                placeholder="updated by"
-                            />
-                        </Box>
-                        <Flex marginTop={2}>
-                            {/* <NextLink href="/forgot-password">
-                                <Link marginLeft="auto">forgot password?</Link>
-                            </NextLink> */}
-                        </Flex>
                         <Button
                             type="submit"
                             marginTop={4}

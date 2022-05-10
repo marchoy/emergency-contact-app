@@ -119,6 +119,13 @@ export type QueryPhoneNumberArgs = {
   id: Scalars['Float'];
 };
 
+export type CreateContactMutationVariables = Exact<{
+  input: ContactInput;
+}>;
+
+
+export type CreateContactMutation = { __typename?: 'Mutation', createContact: { __typename?: 'Contact', id: number, name: string, role: string, createdBy: string, updatedBy: string } };
+
 export type DeleteContactMutationVariables = Exact<{
   deleteContactId: Scalars['Float'];
 }>;
@@ -149,6 +156,21 @@ export type ContactsQueryVariables = Exact<{ [key: string]: never; }>;
 export type ContactsQuery = { __typename?: 'Query', contacts: Array<{ __typename?: 'Contact', id: number, name: string, role: string, contactNumbers: Array<{ __typename?: 'PhoneNumber', phoneNumber?: string | null, phoneNumberType: string }> }> };
 
 
+export const CreateContactDocument = gql`
+    mutation CreateContact($input: ContactInput!) {
+  createContact(input: $input) {
+    id
+    name
+    role
+    createdBy
+    updatedBy
+  }
+}
+    `;
+
+export function useCreateContactMutation() {
+  return Urql.useMutation<CreateContactMutation, CreateContactMutationVariables>(CreateContactDocument);
+};
 export const DeleteContactDocument = gql`
     mutation DeleteContact($deleteContactId: Float!) {
   deleteContact(id: $deleteContactId)
