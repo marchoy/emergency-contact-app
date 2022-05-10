@@ -1,22 +1,22 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { PhoneNumber } from "./PhoneNumber";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Contact } from "./Contact";
 
 @ObjectType()
 @Entity()
-export class Contact extends BaseEntity {
+export class PhoneNumber extends BaseEntity {
 
     @Field()
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Field()
+    @Field({nullable: true})
     @Column()
-    name: string;
+    phoneNumber: string;
 
     @Field()
     @Column()
-    role: string;
+    phoneNumberType: string;
 
     @Field()
     @Column()
@@ -34,8 +34,11 @@ export class Contact extends BaseEntity {
     @CreateDateColumn()
     updatedOn: Date;
 
-    @Field(() => PhoneNumber)
-    @OneToMany(() => PhoneNumber, (phoneNumber) => phoneNumber.contact)
-    phoneNumbers: PhoneNumber[];
+    @Field()
+    @Column()
+    contactId: number;
+
+    @ManyToOne(() => Contact, contact => contact.phoneNumbers)
+    contact: Contact;
   
 }
