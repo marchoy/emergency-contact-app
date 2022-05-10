@@ -38,7 +38,7 @@ export class PhoneNumber extends BaseEntity {
     @Column()
     contactId: number;
 
-    @ManyToOne(() => Contact, contact => contact.phoneNumbers)
+    @ManyToOne(() => Contact, contact => contact.phoneNumbers, { cascade: true, onDelete: "CASCADE" })
     contact: Contact;
   
 }
