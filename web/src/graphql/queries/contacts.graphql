@@ -1,0 +1,11 @@
+query Contacts {
+  contacts {
+    id
+    name
+    role
+    contactNumbers {
+      phoneNumber
+      phoneNumberType
+    }
+  }
+}
