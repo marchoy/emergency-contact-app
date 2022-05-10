@@ -1,0 +1,11 @@
+query Contact($contactId: Float!) {
+  contact(id: $contactId) {
+    id
+    name
+    role
+    createdBy
+    createdOn
+    updatedBy
+    updatedOn
+  }
+}

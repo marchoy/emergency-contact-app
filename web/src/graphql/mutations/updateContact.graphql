@@ -1,0 +1,7 @@
+mutation UpdateContact($updatedBy: String!, $role: String!, $name: String!, $updateContactId: Float!) {
+  updateContact(updatedBy: $updatedBy, role: $role, name: $name, id: $updateContactId) {
+    id
+    name
+    role
+  }
+}
