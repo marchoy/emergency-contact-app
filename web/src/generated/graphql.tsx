@@ -126,12 +126,26 @@ export type CreateContactMutationVariables = Exact<{
 
 export type CreateContactMutation = { __typename?: 'Mutation', createContact: { __typename?: 'Contact', id: number, name: string, role: string, createdBy: string, updatedBy: string } };
 
+export type CreatePhoneNumberMutationVariables = Exact<{
+  input: PhoneNumberInput;
+}>;
+
+
+export type CreatePhoneNumberMutation = { __typename?: 'Mutation', createPhoneNumber: { __typename?: 'PhoneNumber', id: number, phoneNumber?: string | null, phoneNumberType: string } };
+
 export type DeleteContactMutationVariables = Exact<{
   deleteContactId: Scalars['Float'];
 }>;
 
 
 export type DeleteContactMutation = { __typename?: 'Mutation', deleteContact: boolean };
+
+export type DeletePhoneNumberMutationVariables = Exact<{
+  deletePhoneNumberId: Scalars['Float'];
+}>;
+
+
+export type DeletePhoneNumberMutation = { __typename?: 'Mutation', deletePhoneNumber: boolean };
 
 export type UpdateContactMutationVariables = Exact<{
   updatedBy: Scalars['String'];
@@ -149,6 +163,13 @@ export type ContactQueryVariables = Exact<{
 
 
 export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'Contact', id: number, name: string, role: string, createdBy: string, createdOn: string, updatedBy: string, updatedOn: string } | null };
+
+export type ContactNumbersQueryVariables = Exact<{
+  contactId: Scalars['Float'];
+}>;
+
+
+export type ContactNumbersQuery = { __typename?: 'Query', contact?: { __typename?: 'Contact', contactNumbers: Array<{ __typename?: 'PhoneNumber', id: number, phoneNumber?: string | null, phoneNumberType: string }> } | null };
 
 export type ContactsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -171,6 +192,19 @@ export const CreateContactDocument = gql`
 export function useCreateContactMutation() {
   return Urql.useMutation<CreateContactMutation, CreateContactMutationVariables>(CreateContactDocument);
 };
+export const CreatePhoneNumberDocument = gql`
+    mutation CreatePhoneNumber($input: PhoneNumberInput!) {
+  createPhoneNumber(input: $input) {
+    id
+    phoneNumber
+    phoneNumberType
+  }
+}
+    `;
+
+export function useCreatePhoneNumberMutation() {
+  return Urql.useMutation<CreatePhoneNumberMutation, CreatePhoneNumberMutationVariables>(CreatePhoneNumberDocument);
+};
 export const DeleteContactDocument = gql`
     mutation DeleteContact($deleteContactId: Float!) {
   deleteContact(id: $deleteContactId)
@@ -179,6 +213,15 @@ export const DeleteContactDocument = gql`
 
 export function useDeleteContactMutation() {
   return Urql.useMutation<DeleteContactMutation, DeleteContactMutationVariables>(DeleteContactDocument);
+};
+export const DeletePhoneNumberDocument = gql`
+    mutation DeletePhoneNumber($deletePhoneNumberId: Float!) {
+  deletePhoneNumber(id: $deletePhoneNumberId)
+}
+    `;
+
+export function useDeletePhoneNumberMutation() {
+  return Urql.useMutation<DeletePhoneNumberMutation, DeletePhoneNumberMutationVariables>(DeletePhoneNumberDocument);
 };
 export const UpdateContactDocument = gql`
     mutation UpdateContact($updatedBy: String!, $role: String!, $name: String!, $updateContactId: Float!) {
@@ -214,6 +257,21 @@ export const ContactDocument = gql`
 
 export function useContactQuery(options: Omit<Urql.UseQueryArgs<ContactQueryVariables>, 'query'>) {
   return Urql.useQuery<ContactQuery>({ query: ContactDocument, ...options });
+};
+export const ContactNumbersDocument = gql`
+    query ContactNumbers($contactId: Float!) {
+  contact(id: $contactId) {
+    contactNumbers {
+      id
+      phoneNumber
+      phoneNumberType
+    }
+  }
+}
+    `;
+
+export function useContactNumbersQuery(options: Omit<Urql.UseQueryArgs<ContactNumbersQueryVariables>, 'query'>) {
+  return Urql.useQuery<ContactNumbersQuery>({ query: ContactNumbersDocument, ...options });
 };
 export const ContactsDocument = gql`
     query Contacts {

@@ -13,7 +13,7 @@ const Create: React.FC<createProps> = ({}) => {
     const [, createContact] = useCreateContactMutation();
 
     return (
-        <Wrapper>
+        <Wrapper variant="small">
             <Box marginBottom={4}>
                 <Heading fontSize={"xl"}>Create Contact</Heading>
             </Box>
