@@ -1,5 +1,6 @@
 import { Contact } from "../entities/Contact";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
+import { PhoneNumber } from "../entities/PhoneNumber";
 
 @InputType()
 class ContactInput {
@@ -27,8 +28,15 @@ export class ContactResolver {
     }
 
     @Query(() => Contact, { nullable: true })
-    contact(@Arg("id") id: number): Promise<Contact | undefined> {
+    async contact(@Arg("id") id: number): Promise<Contact | undefined> {
         return Contact.findOne(id);
+    }
+
+    @FieldResolver(() => [PhoneNumber])
+    contactNumbers(
+        @Root() contact: Contact
+    ) {
+        return PhoneNumber.find({ where: { contact: { id: contact.id } } })
     }
 
     @Mutation(() => Contact)
@@ -54,10 +62,11 @@ export class ContactResolver {
     }
 
     @Mutation(() => Boolean)
-    async deletePost(
+    async deleteContact(
         @Arg("id") id: number
     ): Promise<boolean> {
         await Contact.delete(id);
         return true;
     }
+
 }
