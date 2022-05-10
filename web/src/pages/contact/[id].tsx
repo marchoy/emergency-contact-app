@@ -1,9 +1,10 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../../components/InputField";
 import { Wrapper } from "../../components/Wrapper";
-import { useUpdateContactMutation } from "../../generated/graphql";
+import { useDeleteContactMutation, useUpdateContactMutation } from "../../generated/graphql";
 import { useGetContactFromUrl } from "../../utils/useGetContactIdFromUrl";
 
 interface contactProps {}
@@ -11,6 +12,8 @@ interface contactProps {}
 const Contact: React.FC<contactProps> = ({}) => {
     const [{ data, fetching }] = useGetContactFromUrl();
     const [, updateContact] = useUpdateContactMutation();
+    const [{ fetching: fetchingDelete }, deleteContact] = useDeleteContactMutation();
+    const router = useRouter();
 
     if (fetching) {
         return (
@@ -64,7 +67,11 @@ const Contact: React.FC<contactProps> = ({}) => {
                             <Button
                                 marginLeft={4}
                                 colorScheme="red"
-                                // onClick={}
+                                isLoading={fetchingDelete}
+                                onClick={async () => {
+                                    await deleteContact({ deleteContactId: data.contact.id });
+                                    router.push("/");
+                                }}
                             >
                                 delete
                             </Button>
