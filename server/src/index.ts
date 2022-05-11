@@ -1,5 +1,5 @@
 import "reflect-metadata"; // typeorm
-import "dotenv/config";
+import "dotenv-safe/config";
 import { createConnection } from "typeorm";
 import path from "path";
 import express from "express";
@@ -12,11 +12,9 @@ import { PhoneNumber } from "./entities/PhoneNumber";
 import { PhoneNumberResolver } from "./resolvers/phoneNumber";
 
 const main = async () => {
-    const connection = await createConnection({
+    await createConnection({
         type: "postgres",
-        database: process.env.DB_NAME,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
+        url: process.env.DATABASE_URL,
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
@@ -29,7 +27,7 @@ const main = async () => {
 
     app.use(
         cors({
-            origin: ["http://localhost:3000", "https://studio.apollographql.com"],
+            origin: process.env.CORS_ORIGIN,
             credentials: true,
         })
     );
@@ -47,8 +45,8 @@ const main = async () => {
         cors: false,
     });
 
-    app.listen(4000, () => {
-        console.log("🚀 Server ready at http://localhost:4000/");
+    app.listen(parseInt(process.env.PORT), () => {
+        console.log(`🚀 Server ready at http://localhost:${process.env.PORT}/`);
     });
 };
 
