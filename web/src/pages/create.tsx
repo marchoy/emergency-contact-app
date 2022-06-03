@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
 import { useCreateContactMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
+import { validationErrorMap } from "../utils/validationErrorMap";
 
 interface createProps {}
 
@@ -24,8 +25,11 @@ const Create: React.FC<createProps> = ({}) => {
                     createdBy: "",
                     updatedBy: "",
                 }}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { setErrors }) => {
                     const { error } = await createContact({ input: values });
+                    if (error) {
+                        setErrors(validationErrorMap(error));
+                    }
                     if (!error) {
                         router.push("/");
                     }

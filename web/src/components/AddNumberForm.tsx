@@ -2,6 +2,7 @@ import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useCreatePhoneNumberMutation } from "../generated/graphql";
+import { validationErrorMap } from "../utils/validationErrorMap";
 import { InputField } from "./InputField";
 
 interface addNumberFormProps {
@@ -17,8 +18,8 @@ const AddNumberForm: React.FC<addNumberFormProps> = ({ contactId }) => {
                 phoneNumber: "",
                 phoneNumberType: "",
             }}
-            onSubmit={async (values, { resetForm }) => {
-                await addPhoneNumber({
+            onSubmit={async (values, { resetForm, setErrors }) => {
+                const { error } = await addPhoneNumber({
                     input: {
                         contactId,
                         createdBy: "",
@@ -26,7 +27,11 @@ const AddNumberForm: React.FC<addNumberFormProps> = ({ contactId }) => {
                         ...values,
                     },
                 });
-                resetForm();
+                if (error) {
+                    setErrors(validationErrorMap(error));
+                } else {
+                    resetForm();
+                }
             }}
         >
             {({ isSubmitting }) => (

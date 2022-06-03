@@ -1,20 +1,25 @@
 import { Contact } from "../entities/Contact";
 import { Arg, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
 import { PhoneNumber } from "../entities/PhoneNumber";
+import { Length } from "class-validator";
 
 @InputType()
 class ContactInput {
 
     @Field()
+    @Length(1, 50)
     name: string;
 
     @Field()
+    @Length(1, 50)
     role: string;
 
     @Field()
+    @Length(1, 50)
     createdBy: string;
 
     @Field()
+    @Length(1, 50)
     updatedBy: string;
 
 }
