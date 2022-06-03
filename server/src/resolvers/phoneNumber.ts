@@ -1,13 +1,16 @@
 import { PhoneNumber } from "../entities/PhoneNumber";
 import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Length } from "class-validator";
 
 @InputType()
 class PhoneNumberInput {
 
     @Field()
+    @Length(1, 50)
     phoneNumber: string;
 
     @Field()
+    @Length(1, 50)
     phoneNumberType: string;
 
     @Field()
