@@ -36,7 +36,6 @@ const main = async () => {
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [ContactResolver, PhoneNumberResolver],
-            validate: false,
         }),
     });
 
