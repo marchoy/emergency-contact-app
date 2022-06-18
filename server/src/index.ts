@@ -10,6 +10,7 @@ import { Contact } from "./entities/Contact";
 import { ContactResolver } from "./resolvers/contact";
 import { PhoneNumber } from "./entities/PhoneNumber";
 import { PhoneNumberResolver } from "./resolvers/phoneNumber";
+import { __prod__ } from "./constants";
 
 const main = async () => {
     await createConnection({
@@ -27,7 +28,7 @@ const main = async () => {
 
     app.use(
         cors({
-            origin: process.env.CORS_ORIGIN,
+            origin: __prod__ ? process.env.CORS_ORIGIN : [process.env.CORS_ORIGIN, process.env.CORS_ORIGIN_APOLLO],
             credentials: true,
         })
     );
