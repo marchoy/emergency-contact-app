@@ -19,7 +19,7 @@ class ContactInput {
     createdBy: string;
 
     @Field()
-    @Length(1, 50)
+    @Length(0, 50)
     updatedBy: string;
 
 }
