@@ -1,5 +1,4 @@
 import { ChakraProvider } from '@chakra-ui/react';
-
 import theme from '../theme';
 import { AppProps } from 'next/app';
 import { createClient, dedupExchange, fetchExchange, Provider } from 'urql';
@@ -17,7 +16,6 @@ const client = createClient({
             cache.invalidate({ __typename: "Contact", id: args.id as number });
           },
           createContact: (result, args, cache, info) => {
-            // invalidate the cache and re-fetch
             cache.invalidate("Query", "contacts");
           },
           deletePhoneNumber: (result, args, cache, info) => {
