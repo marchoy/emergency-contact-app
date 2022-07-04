@@ -13,6 +13,10 @@ const client = createClient({
         deleteContact: (result, args, cache, info) => {
           cache.invalidate({ __typename: "Contact", id: args.id as number });
         },
+        createContact: (result, args, cache, info) => {
+          // invalidate the cache and re-fetch
+          cache.invalidate("Query", "contacts");
+        },
       },
     },
   }) as any, fetchExchange],
