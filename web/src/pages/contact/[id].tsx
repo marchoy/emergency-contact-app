@@ -25,9 +25,9 @@ const Contact: React.FC<contactProps> = ({}) => {
                 <>
                     <Formik
                         initialValues={{
-                            name: data?.contact.name,
-                            role: data?.contact.role,
-                            updatedBy: data?.contact.updatedBy,
+                            name: data?.contact?.name,
+                            role: data?.contact?.role,
+                            updatedBy: data?.contact?.updatedBy,
                         }}
                         onSubmit={async (values) => {
                             await updateContact({ updateContactId: data.contact.id, ...values });
