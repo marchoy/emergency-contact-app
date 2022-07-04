@@ -33,7 +33,7 @@ const ContactNumbers: React.FC<contactNumbersProps> = ({ contactId }) => {
                         </Thead>
                         <Tbody>
                             {data.contact.contactNumbers.map(contactNumber => 
-                                <Tr>
+                                <Tr key={contactNumber.id}>
                                     <Th>{contactNumber.phoneNumber}</Th>
                                     <Th>{contactNumber.phoneNumberType}</Th>
                                     <Th>

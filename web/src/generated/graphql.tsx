@@ -169,12 +169,12 @@ export type ContactNumbersQueryVariables = Exact<{
 }>;
 
 
-export type ContactNumbersQuery = { __typename?: 'Query', contact?: { __typename?: 'Contact', contactNumbers: Array<{ __typename?: 'PhoneNumber', id: number, phoneNumber?: string | null, phoneNumberType: string }> } | null };
+export type ContactNumbersQuery = { __typename?: 'Query', contact?: { __typename?: 'Contact', id: number, contactNumbers: Array<{ __typename?: 'PhoneNumber', id: number, phoneNumber?: string | null, phoneNumberType: string }> } | null };
 
 export type ContactsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ContactsQuery = { __typename?: 'Query', contacts: Array<{ __typename?: 'Contact', id: number, name: string, role: string, contactNumbers: Array<{ __typename?: 'PhoneNumber', phoneNumber?: string | null, phoneNumberType: string }> }> };
+export type ContactsQuery = { __typename?: 'Query', contacts: Array<{ __typename?: 'Contact', id: number, name: string, role: string, contactNumbers: Array<{ __typename?: 'PhoneNumber', id: number, phoneNumber?: string | null, phoneNumberType: string }> }> };
 
 
 export const CreateContactDocument = gql`
@@ -261,6 +261,7 @@ export function useContactQuery(options: Omit<Urql.UseQueryArgs<ContactQueryVari
 export const ContactNumbersDocument = gql`
     query ContactNumbers($contactId: Float!) {
   contact(id: $contactId) {
+    id
     contactNumbers {
       id
       phoneNumber
@@ -280,6 +281,7 @@ export const ContactsDocument = gql`
     name
     role
     contactNumbers {
+      id
       phoneNumber
       phoneNumberType
     }
