@@ -7,7 +7,15 @@ import { cacheExchange } from '@urql/exchange-graphcache';
 
 const client = createClient({
   url: process.env.NEXT_PUBLIC_API_URL,
-  exchanges: [dedupExchange, cacheExchange({}) as any, fetchExchange],
+  exchanges: [dedupExchange, cacheExchange({
+    updates: {
+      Mutation: {
+        deleteContact: (result, args, cache, info) => {
+          cache.invalidate({ __typename: "Contact", id: args.id as number });
+        },
+      },
+    },
+  }) as any, fetchExchange],
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
