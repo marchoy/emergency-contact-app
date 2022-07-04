@@ -17,6 +17,9 @@ const client = createClient({
           // invalidate the cache and re-fetch
           cache.invalidate("Query", "contacts");
         },
+        deletePhoneNumber: (result, args, cache, info) => {
+          cache.invalidate({ __typename: "PhoneNumber", id: args.id as number });
+        },
       },
     },
   }) as any, fetchExchange],
