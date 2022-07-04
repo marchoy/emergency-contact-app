@@ -4,6 +4,7 @@ query Contacts {
     name
     role
     contactNumbers {
+      id
       phoneNumber
       phoneNumberType
     }

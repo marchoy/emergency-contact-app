@@ -42,7 +42,7 @@ const Index = () => {
                 </Thead>
                 <Tbody>
                   {data.contacts.map(contact =>
-                    <Tr>
+                    <Tr key={contact.id}>
                       <Th>{contact.name}</Th>
                       <Th>{contact.role}</Th>
                       <Th>
