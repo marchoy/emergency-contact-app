@@ -40,7 +40,6 @@ const ContactNumbers: React.FC<contactNumbersProps> = ({ contactId }) => {
                                         <Link
                                             onClick={async () => {
                                                 await deletePhoneNumber({ deletePhoneNumberId: contactNumber.id });
-                                                router.reload(); // not ideal, update cache instead
                                             }}
                                         >
                                             delete
