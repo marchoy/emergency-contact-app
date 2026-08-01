@@ -1,16 +1,13 @@
-import { Heading, Link, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { Box, Heading, Link, Table } from "@chakra-ui/react";
 import React from "react";
 import { useContactNumbersQuery, useDeletePhoneNumberMutation } from "../generated/graphql";
 import AddNumberForm from "./AddNumberForm";
-import { Wrapper } from "./Wrapper";
 
 interface contactNumbersProps {
     contactId: number;
 }
 
 const ContactNumbers: React.FC<contactNumbersProps> = ({ contactId }) => {
-    const router = useRouter();
     const [{ data, fetching }] = useContactNumbersQuery({ variables: { contactId } });
     const [, deletePhoneNumber] = useDeletePhoneNumberMutation();
 
@@ -19,40 +16,41 @@ const ContactNumbers: React.FC<contactNumbersProps> = ({ contactId }) => {
     }
 
     return (
-        <Wrapper>
+        <Box marginTop={8}>
             <Heading fontSize={"xl"} marginBottom={5}>Contact Numbers</Heading>
             {fetching ? (<div>Loading...</div>) : (
-                <TableContainer>
-                    <Table variant={"simple"}>
-                        <Thead>
-                            <Tr>
-                                <Th>Contact Number</Th>
-                                <Th>Type</Th>
-                                <Th></Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {data.contact.contactNumbers.map(contactNumber => 
-                                <Tr key={contactNumber.id}>
-                                    <Th>{contactNumber.phoneNumber}</Th>
-                                    <Th>{contactNumber.phoneNumberType}</Th>
-                                    <Th>
-                                        <Link
-                                            onClick={async () => {
-                                                await deletePhoneNumber({ deletePhoneNumberId: contactNumber.id });
-                                            }}
-                                        >
-                                            delete
-                                        </Link>
-                                    </Th>
-                                </Tr>    
-                            )}
-                        </Tbody>
-                    </Table>
-                </TableContainer>
+                <Table.Root>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.ColumnHeader>Contact Number</Table.ColumnHeader>
+                            <Table.ColumnHeader>Type</Table.ColumnHeader>
+                            <Table.ColumnHeader></Table.ColumnHeader>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {data.contact.contactNumbers.map(contactNumber => 
+                            <Table.Row key={contactNumber.id}>
+                                <Table.Cell>{contactNumber.phoneNumber}</Table.Cell>
+                                <Table.Cell>{contactNumber.phoneNumberType}</Table.Cell>
+                                <Table.Cell>
+                                    <Link
+                                        onClick={async () => {
+                                            const result = await deletePhoneNumber({ deletePhoneNumberId: contactNumber.id });
+                                            if (result.error) {
+                                                alert(result.error.message.replace("[GraphQL] ", ""));
+                                            }
+                                        }}
+                                    >
+                                        delete
+                                    </Link>
+                                </Table.Cell>
+                            </Table.Row>    
+                        )}
+                    </Table.Body>
+                </Table.Root>
             )}
             <AddNumberForm contactId={contactId} />
-        </Wrapper>
+        </Box>
     );
 };
 

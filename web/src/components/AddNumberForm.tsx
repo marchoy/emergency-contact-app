@@ -52,8 +52,8 @@ const AddNumberForm: React.FC<addNumberFormProps> = ({ contactId }) => {
                     <Box marginTop={4}>
                         <Button
                             type="submit"
-                            isLoading={isSubmitting}
-                            colorScheme="green"
+                            loading={isSubmitting}
+                            colorPalette="green"
                         >
                             add contact number
                         </Button>

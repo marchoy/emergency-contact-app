@@ -1,4 +1,7 @@
-FROM node:16
+FROM node:20-alpine
+
+# Update package index and upgrade vulnerable OS libraries
+RUN apk update && apk upgrade --no-cache
 
 # Create app directory
 WORKDIR /usr/src/app

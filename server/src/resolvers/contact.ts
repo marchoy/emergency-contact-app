@@ -1,31 +1,38 @@
 import { Contact } from "../entities/Contact";
-import { Arg, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
+import { Arg, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { PhoneNumber } from "../entities/PhoneNumber";
 import { Length } from "class-validator";
+import { checkAuth } from "../utils/checkAuth";
 
 @InputType()
 class ContactInput {
 
     @Field()
     @Length(1, 50)
-    name: string;
+    name?: string;
 
     @Field()
     @Length(1, 50)
-    role: string;
+    role?: string;
 
     @Field()
     @Length(1, 50)
-    createdBy: string;
+    createdBy?: string;
 
     @Field()
     @Length(0, 50)
-    updatedBy: string;
+    updatedBy?: string;
 
 }
 
 @Resolver(Contact)
 export class ContactResolver {
+
+    @Query(() => Boolean)
+    @UseMiddleware(checkAuth)
+    checkAuth(): boolean {
+        return true;
+    }
 
     @Query(() => [Contact])
     async contacts(): Promise<Contact[]> {
@@ -45,6 +52,7 @@ export class ContactResolver {
     }
 
     @Mutation(() => Contact)
+    @UseMiddleware(checkAuth)
     createContact(
         @Arg("input") input: ContactInput
     ) {
@@ -52,6 +60,7 @@ export class ContactResolver {
     }
 
     @Mutation(() => Contact, { nullable: true })
+    @UseMiddleware(checkAuth)
     async updateContact(
         @Arg("id") id: number,
         @Arg("name") name: string,
@@ -67,6 +76,7 @@ export class ContactResolver {
     }
 
     @Mutation(() => Boolean)
+    @UseMiddleware(checkAuth)
     async deleteContact(
         @Arg("id") id: number
     ): Promise<boolean> {

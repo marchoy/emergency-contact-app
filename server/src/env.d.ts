@@ -5,6 +5,7 @@ declare global {
       PORT: string;
       CORS_ORIGIN: string;
       CORS_ORIGIN_APOLLO: string;
+      ADMIN_PASSWORD?: string;
     }
   }
 }

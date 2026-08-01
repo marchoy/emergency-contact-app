@@ -10,35 +10,35 @@ export class PhoneNumber extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Field({nullable: true})
+    @Field()
     @Column()
-    phoneNumber: string;
+    phoneNumber?: string;
 
     @Field()
     @Column()
-    phoneNumberType: string;
+    phoneNumberType?: string;
 
     @Field()
     @Column()
-    createdBy: string;
+    createdBy?: string;
 
     @Field(() => String)
     @CreateDateColumn()
-    createdOn: Date;
+    createdOn?: Date;
 
     @Field()
     @Column()
-    updatedBy: string;
+    updatedBy?: string;
 
     @Field(() => String)
     @CreateDateColumn()
-    updatedOn: Date;
+    updatedOn?: Date;
 
     @Field()
     @Column()
-    contactId: number;
+    contactId?: number;
 
     @ManyToOne(() => Contact, contact => contact.phoneNumbers, { cascade: true, onDelete: "CASCADE" })
-    contact: Contact;
+    contact?: Contact;
   
 }

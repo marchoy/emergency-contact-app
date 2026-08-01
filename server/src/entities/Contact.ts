@@ -12,30 +12,30 @@ export class Contact extends BaseEntity {
 
     @Field()
     @Column()
-    name: string;
+    name?: string;
 
     @Field()
     @Column()
-    role: string;
+    role?: string;
 
     @Field()
     @Column()
-    createdBy: string;
+    createdBy?: string;
 
     @Field(() => String)
     @CreateDateColumn()
-    createdOn: Date;
+    createdOn?: Date;
 
     @Field()
     @Column()
-    updatedBy: string;
+    updatedBy?: string;
 
     @Field(() => String)
     @CreateDateColumn()
-    updatedOn: Date;
+    updatedOn?: Date;
 
     @Field(() => PhoneNumber)
     @OneToMany(() => PhoneNumber, (phoneNumber) => phoneNumber.contact)
-    phoneNumbers: PhoneNumber[];
+    phoneNumbers?: PhoneNumber[];
   
 }
