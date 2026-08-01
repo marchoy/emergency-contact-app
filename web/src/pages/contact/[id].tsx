@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -31,7 +31,6 @@ const Contact: React.FC<contactProps> = ({}) => {
                         }}
                         onSubmit={async (values) => {
                             await updateContact({ updateContactId: data.contact.id, ...values });
-                            // router.push("/");
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -58,18 +57,22 @@ const Contact: React.FC<contactProps> = ({}) => {
                                 <Box marginTop={4}>
                                     <Button
                                         type="submit"
-                                        isLoading={isSubmitting}
-                                        colorScheme="green"
+                                        loading={isSubmitting}
+                                        colorPalette="green"
                                     >
                                         update
                                     </Button>
                                     <Button
                                         marginLeft={4}
-                                        colorScheme="red"
-                                        isLoading={fetchingDelete}
+                                        colorPalette="red"
+                                        loading={fetchingDelete}
                                         onClick={async () => {
-                                            await deleteContact({ deleteContactId: data.contact.id });
-                                            router.push("/");
+                                            const result = await deleteContact({ deleteContactId: data.contact.id });
+                                            if (result.error) {
+                                                alert(result.error.message.replace("[GraphQL] ", ""));
+                                            } else {
+                                                router.push("/");
+                                            }
                                         }}
                                     >
                                         delete

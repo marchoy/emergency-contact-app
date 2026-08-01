@@ -11,6 +11,7 @@ import { ContactResolver } from "./resolvers/contact";
 import { PhoneNumber } from "./entities/PhoneNumber";
 import { PhoneNumberResolver } from "./resolvers/phoneNumber";
 import { __prod__ } from "./constants";
+import { MyContext } from "./types";
 
 const main = async () => {
     await createConnection({
@@ -37,6 +38,7 @@ const main = async () => {
         schema: await buildSchema({
             resolvers: [ContactResolver, PhoneNumberResolver],
         }),
+        context: ({ req, res }): MyContext => ({ req, res }),
     });
 
     await apolloServer.start();

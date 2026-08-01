@@ -59,8 +59,8 @@ const Create: React.FC<createProps> = ({}) => {
                         <Button
                             type="submit"
                             marginTop={4}
-                            isLoading={isSubmitting}
-                            colorScheme="green"
+                            loading={isSubmitting}
+                            colorPalette="green"
                         >
                             submit
                         </Button>

@@ -1,26 +1,27 @@
 import { PhoneNumber } from "../entities/PhoneNumber";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Field, InputType, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { Length } from "class-validator";
+import { checkAuth } from "../utils/checkAuth";
 
 @InputType()
 class PhoneNumberInput {
 
     @Field()
     @Length(1, 50)
-    phoneNumber: string;
+    phoneNumber?: string;
 
     @Field()
     @Length(1, 50)
-    phoneNumberType: string;
+    phoneNumberType?: string;
 
     @Field()
-    createdBy: string;
+    createdBy?: string;
 
     @Field()
-    updatedBy: string;
+    updatedBy?: string;
 
     @Field()
-    contactId: number;
+    contactId?: number;
 }
 
 @Resolver(PhoneNumber)
@@ -37,6 +38,7 @@ export class PhoneNumberResolver {
     }
 
     @Mutation(() => PhoneNumber)
+    @UseMiddleware(checkAuth)
     createPhoneNumber(
         @Arg("input") input: PhoneNumberInput
     ) {
@@ -44,6 +46,7 @@ export class PhoneNumberResolver {
     }
 
     @Mutation(() => PhoneNumber, { nullable: true })
+    @UseMiddleware(checkAuth)
     async updatePhoneNumber(
         @Arg("id") id: number,
         @Arg("phoneNumber") phoneNumber: string,
@@ -59,6 +62,7 @@ export class PhoneNumberResolver {
     }
 
     @Mutation(() => Boolean)
+    @UseMiddleware(checkAuth)
     async deletePhoneNumber(
         @Arg("id") id: number
     ): Promise<boolean> {
